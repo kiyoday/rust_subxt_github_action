@@ -73,7 +73,7 @@ pub fn get_node_url_from_cli() -> String {
     // println!("Interacting with node on {}\n", url);
     // let url = "wss://kusama-statemine-rpc.paritytech.net";
 
-    let url ="wss://westend-rpc.polkadot.io";
-    // let url ="wss://westmint-rpc.polkadot.io";
+    // let url ="wss://westend-rpc.polkadot.io";
+    let url ="wss://westmint-rpc.polkadot.io";
     url.to_string()
 }
