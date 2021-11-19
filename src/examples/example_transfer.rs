@@ -34,8 +34,8 @@ fn main() {
         .map(|api| api.set_signer(from.clone()))
         .unwrap();
     let to = AccountKeyring::Bob.to_account_id();
-    // let to2 = AccountId32::from_str("5FsoijzNwnT6FpXUB1nmuq43Pn7M68E2PogJot688r473RdP").unwrap();
-    let to2 = AccountId32::from_str("5CDRdJ9QYyg7Fr6cqMLAdpYCfU14PX1qj8abEFLVDyAW6bfW").unwrap();
+    let to2 = AccountId32::from_str("5FsoijzNwnT6FpXUB1nmuq43Pn7M68E2PogJot688r473RdP").unwrap();
+    // let to2 = AccountId32::from_str("5CDRdJ9QYyg7Fr6cqMLAdpYCfU14PX1qj8abEFLVDyAW6bfW").unwrap();
     match api.get_account_data(&to2).unwrap() {
         Some(bob) => println!("[+] Bob's Free Balance is is {}\n", bob.free),
         None => println!("[+] Bob's Free Balance is is 0\n"),
@@ -73,7 +73,7 @@ pub fn get_node_url_from_cli() -> String {
     // println!("Interacting with node on {}\n", url);
     // let url = "wss://kusama-statemine-rpc.paritytech.net";
 
-    // let url ="wss://westend-rpc.polkadot.io";
-    let url ="wss://westmint-rpc.polkadot.io";
+    let url ="wss://westend-rpc.polkadot.io";
+    // let url ="wss://westmint-rpc.polkadot.io";
     url.to_string()
 }
