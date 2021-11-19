@@ -13,10 +13,11 @@
     limitations under the License.
 */
 
+use std::str::FromStr;
 ///! Very simple example that shows how to use a predefined extrinsic from the extrinsic module
-use clap::{load_yaml, App};
+// use clap::{load_yaml, App};
 use keyring::AccountKeyring;
-use sp_core::crypto::Pair;
+use sp_core::crypto::{AccountId32, Pair};
 use sp_runtime::MultiAddress;
 
 use substrate_api_client::rpc::WsRpcClient;
@@ -32,23 +33,23 @@ fn main() {
     let api = Api::new(client)
         .map(|api| api.set_signer(from.clone()))
         .unwrap();
-
     let to = AccountKeyring::Bob.to_account_id();
-
+    let to2 = AccountId32::from_str("5FsoijzNwnT6FpXUB1nmuq43Pn7M68E2PogJot688r473RdP").unwrap();
     match api.get_account_data(&to).unwrap() {
         Some(bob) => println!("[+] Bob's Free Balance is is {}\n", bob.free),
         None => println!("[+] Bob's Free Balance is is 0\n"),
     }
     // generate extrinsic
-    let xt = api.balance_transfer(MultiAddress::Id(to.clone()), 1000);
+    let xt = api.balance_transfer(MultiAddress::Id(to2.clone()), 1000);
 
     println!(
         "Sending an extrinsic from Alice (Key = {}),\n\nto Bob (Key = {})\n",
         from.public(),
         to
     );
+    // println!("[+] Composed extrinsic: {:?}\n", xt);
 
-    println!("[+] Composed extrinsic: {:?}\n", xt);
+    println!("[+] hex extrinsic : {:?}\n", xt.hex_encode());
 
     // send and watch extrinsic until finalized
     let tx_hash = api
@@ -57,17 +58,21 @@ fn main() {
     println!("[+] Transaction got included. Hash: {:?}\n", tx_hash);
 
     // verify that Bob's free Balance increased
-    let bob = api.get_account_data(&to).unwrap().unwrap();
+    let bob = api.get_account_data(&to2).unwrap().unwrap();
     println!("[+] Bob's Free Balance is now {}\n", bob.free);
 }
 
 pub fn get_node_url_from_cli() -> String {
-    let yml = load_yaml!("../../src/examples/cli.yml");
-    let matches = App::from_yaml(yml).get_matches();
+    // let yml = load_yaml!("../../src/examples/cli.yml");
+    // let matches = App::from_yaml(yml).get_matches();
 
-    let node_ip = matches.value_of("node-server").unwrap_or("ws://127.0.0.1");
-    let node_port = matches.value_of("node-port").unwrap_or("9944");
-    let url = format!("{}:{}", node_ip, node_port);
-    println!("Interacting with node on {}\n", url);
-    url
+    // let node_ip = matches.value_of("node-server").unwrap_or("ws://127.0.0.1");
+    // let node_port = matches.value_of("node-port").unwrap_or("9944");
+    // let url = format!("{}:{}", node_ip, node_port);
+    // println!("Interacting with node on {}\n", url);
+    // let url = "wss://kusama-statemine-rpc.paritytech.net";
+
+    // let url ="wss://westend-rpc.polkadot.io";
+    let url ="wss://westmint-rpc.polkadot.io";
+    url.to_string()
 }
